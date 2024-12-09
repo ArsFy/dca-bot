@@ -1,31 +1,53 @@
 package main
 
 import (
-	"fmt"
-	"math/big"
-
-	bybit "github.com/wuhewuhe/bybit.go.api"
+    "fmt"
+    bybit "github.com/wuhewuhe/bybit.go.api"
+    "log"
+    "math/big"
 )
 
 var Client *bybit.Client
 
 func main() {
-	Client = bybit.NewBybitHttpClient(
-		Config.ApiKey, Config.ApiSecret,
-		bybit.WithBaseURL(bybit.DEMO_ENV),
-	)
+    Client = bybit.NewBybitHttpClient(
+        Config.ApiKey, Config.ApiSecret,
+        bybit.WithBaseURL(bybit.DEMO_ENV),
+    )
 
-	bot1 := &DCA{
-		Symbol:      "DOGEUSDT",
-		Amount:      big.NewFloat(100.0),
-		PriceGap:    big.NewFloat(2.4 * 0.01),
-		PriceScale:  big.NewFloat(1.7),
-		AmountScale: big.NewFloat(1.5),
-		OrderNumber: 6,
-	}
+    // Get Instrument Info
+    err := GetInstrumentInfo()
+    if err != nil {
+        log.Panicln("Error getting instrument info:", err)
+    }
 
-	bot1.GetPrice()
-	bot1.GetInstrumentsInfo()
+    // Get All Position
+    GetAllPosition()
 
-	fmt.Println(bot1.TickSize.String(), bot1.QtySize)
+    // Scan
+    go ScanPosition()
+
+    // Set Enter
+    for symbol, config := range SymbolConfig {
+        if _, ok := existPositions[symbol]; ok {
+            log.Printf("Position already exists for %s, skipping...\n", symbol)
+            continue
+        }
+
+        bot := &DCA{
+            Symbol:      symbol,
+            Leverage:    config.Leverage,
+            Amount:      big.NewFloat(float64(config.Amount)),
+            PriceGap:    big.NewFloat(config.PriceGap * 0.01),
+            PriceScale:  big.NewFloat(config.PriceScale),
+            AmountScale: big.NewFloat(config.AmountScale),
+            OrderNumber: config.OrderNumber,
+        }
+        if err := bot.Run(); err != nil {
+            log.Println("Error running bot:", err)
+        }
+    }
+
+    fmt.Println("Bot started.")
+    select {}
 }

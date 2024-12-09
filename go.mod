@@ -1,6 +1,6 @@
 module dca
 
-go 1.22.1
+go 1.23.3
 
 require github.com/wuhewuhe/bybit.go.api v1.0.4
 

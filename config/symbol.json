@@ -1,0 +1,42 @@
+{
+    "DOGEUSDT": {
+        "amount": 100,
+        "leverage": 3,
+        "price_gap": 2.4,
+        "price_scale": 1.7,
+        "amount_scale": 1.5,
+        "order_number": 6,
+        "tp": 2,
+        "move_tp": 0.4
+    },
+    "1000PEPEUSDT": {
+        "amount": 100,
+        "leverage": 3,
+        "price_gap": 2.4,
+        "price_scale": 1.7,
+        "amount_scale": 1.5,
+        "order_number": 6,
+        "tp": 2,
+        "move_tp": 0.4
+    },
+    "NEARUSDT": {
+        "amount": 100,
+        "leverage": 3,
+        "price_gap": 2.4,
+        "price_scale": 1.7,
+        "amount_scale": 1.5,
+        "order_number": 6,
+        "tp": 2,
+        "move_tp": 0.4
+    },
+    "UNIUSDT": {
+        "amount": 100,
+        "leverage": 3,
+        "price_gap": 2.4,
+        "price_scale": 1.7,
+        "amount_scale": 1.5,
+        "order_number": 6,
+        "tp": 2,
+        "move_tp": 0.4
+    }
+}
